@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
-function App() {
+import quizzData from './data/quiz.json'
+
+import './App.css';
+import Question from './components/Question';
+import Start from './components/Start'
+
+const App = () => {
+  const [step, setStep] = useState(1),
+    [activeQuestion, setActiveQuestion] = useState(0),
+    [answers, setAnswers] = useState([]);
+
+  const quizStartHandler = () => {
+    setStep(2)
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {step===1 && <Start onQuizStart={quizStartHandler} />}
+      {step === 2 && <Question
+        data={quizzData.data[activeQuestion]}
+        onAnswerUpdate={setAnswers}
+        numberOfQuestions={quizzData.data.length}
+        activeQuestion={activeQuestion}
+        onSetActiveQuestion={setActiveQuestion}
+        onSetStep={setStep}
+        />}
     </div>
   );
 }
