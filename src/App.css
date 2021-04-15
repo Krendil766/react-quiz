@@ -36,3 +36,7 @@ label.radio input {
 .radio {
     margin-left: .5em;
 }
+
+.button {
+    margin-right: 10px;
+}

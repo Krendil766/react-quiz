@@ -13,21 +13,31 @@ const Question = ({
 
     const radiosWrapper = useRef();
 
+    useEffect(() => {
+        const findCheckedInput = radiosWrapper.current.querySelector('input:checked')
+        if (findCheckedInput){
+            findCheckedInput.checked=false
+        }
+        
+    }, [data])
+
     const changeHandler = (e) => {
         setSelected(e.target.value)
+        if (error) {
+            setError('')
+        }
     }
 
     const nextClickHandler = (e) => {
         if (selected === '') {
             return setError('Please select one option')
         }
-
         onAnswerUpdate(prevState => [...prevState, { q: data.question, a: selected }]);
         setSelected('');
         if (activeQuestion < numberOfQuestions - 1) {
             onSetActiveQuestion(activeQuestion + 1)
         } else {
-            onSetStep(0)
+            onSetStep(3)
         }
 
     }
@@ -35,7 +45,7 @@ const Question = ({
         <div className="card">
             <div className="card-content">
                 <h2 className="mb-5">{data.question}</h2>
-                <div className="control">
+                <div className="control" ref={radiosWrapper}>
                     {data.choices.map((choice,i) => (
                         <label key={i} className="label radio has-background-light">
                         <input
